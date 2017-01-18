@@ -32,13 +32,9 @@
                 @"http://ipadapp.niravmodi.com//uploads/products/product_id_11/product_gia_cert/11_4_certi.pdf",
                 @"http://ipadapp.niravmodi.com//uploads/products/product_id_11/product_gia_cert/11_5_certi.pdf",
                 @"http://ipadapp.niravmodi.com//uploads/products/product_id_11/product_gia_cert/11_6_certi.pdf"];
-    intImageIndex = 0;
-    
+    intImageIndex = 0;    
     lblStatus.text = [NSString stringWithFormat:@"Downloading %d of %d files ...",(intImageIndex+1), (int)aryURLS.count];
-//    [self fetchImages];
-    
-    [self callAPI];
-    // Do any additional setup after loading the view, typically from a nib.
+
 }
 
 -(void)fetchImages{
@@ -84,7 +80,21 @@
     [[WebHelper sharedManager] callWebServiceWithType:strUrl withPath:nil WithRequestPara:dicRequest OnCompletion:^(id response) {
         
         NSDictionary *dic = response;
+        
+        
         NSLog(@"dic%@",dic.description);
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"API Response"
+                                                                       message:dic.description
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
         
     } OnError:^(id error) {
         
@@ -98,4 +108,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)actionDownload:(id)sender {
+    
+     [self fetchImages];
+}
+
+- (IBAction)actionAPICall:(id)sender {
+        [self callAPI];
+}
 @end
